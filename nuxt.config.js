@@ -50,11 +50,5 @@ module.exports = {
       }
     }
   },
-  router: {
-    beforeResolve(to, from, next) {
-      if (this.$store.getters.isLoggedIn)
-            next('/resource')
-    }
-  }
 }
 

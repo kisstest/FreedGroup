@@ -1,45 +1,46 @@
 <template>
-<b-container fluid>
-  <h1>Albums</h1>
-  <b-row class="mt-3">
-    <b-col v-for="(item, index) in albumlist" :key="index">
-    <!-- <div class="col" v-for="(item, index) in albumlist" :key="index"> -->
-       <b-card
-        :title="item.title"
-        :img-src="'https://placeimg.com/320/100/any'"
-        img-alt="Image"
-        img-top
-        tag="article"
-        class="mb-2"
-      >
-        <b-button size="sm" @click="openModifyAblumModal(item)">수정</b-button>
-        <b-button size="sm" @click="deleteAlbum(item.id)" href="#" variant="primary">삭제하기</b-button>
-      </b-card>
-    </b-col>
-  </b-row>
-  <b-row>
-    <paginate
-      :page-count="datapage"
-      :page-range="3"
-      :margin-pages="2"
-      :click-handler="changePage"
-      :prev-text="'prev'"
-      :next-text="'next'"
-      :container-class="'pagination'"
-      :page-class="'page-item'">
-    </paginate>
-  </b-row>
-  <b-row>    
-    <b-modal id="modal" title="수정" @ok="modifyAlbum">
-      <b-form-input v-model="modifyAlbumTitle" placeholder="Enter your album title"></b-form-input>
-    </b-modal>
-    <b-button v-b-modal.modal-1>Add album</b-button>
-    <b-modal id="modal-1" title="Add album" @ok="addAlbum">
-      <b-form-input v-model="albumTitle" placeholder="Enter your album title"></b-form-input>
-    </b-modal>
-    <nuxt-link to="/" class="button--grey">Home</nuxt-link>
-  </b-row>
-</b-container>
+  <b-container fluid>
+    <h1>Albums</h1>
+    <b-row class="mt-3">
+      <b-col v-for="(item, index) in albumlist" :key="index">
+      <!-- <div class="col" v-for="(item, index) in albumlist" :key="index"> -->
+        <b-card
+          :title="item.title"
+          :img-src="'https://placeimg.com/320/100/any'"
+          img-alt="Image"
+          img-top
+          tag="article"
+          class="mb-2"
+        >
+          <b-button size="sm" @click="openModifyAblumModal(item)">수정</b-button>
+          <b-button size="sm" @click="deleteAlbum(item.id)" href="#" variant="primary">삭제하기</b-button>
+        </b-card>
+      </b-col>
+    </b-row>
+    <b-row>
+      <paginate
+        :page-count="datapage"
+        :page-range="3"
+        :margin-pages="2"
+        :click-handler="changePage"
+        :prev-text="'prev'"
+        :next-text="'next'"
+        :container-class="'pagination'"
+        :page-class="'page-item'">
+      </paginate>
+    </b-row>
+    <b-row>
+      <b-modal id="modal" title="수정" @ok="modifyAlbum">
+        <b-form-input v-model="modifyAlbumTitle" placeholder="Enter your album title"></b-form-input>
+      </b-modal>
+      <b-button size="sm" v-b-modal.modal-1 variant="success">Add album</b-button>
+      <b-modal id="modal-1" title="Add album" @ok="addAlbum">
+        <b-form-input v-model="albumTitle" placeholder="Enter your album title"></b-form-input>
+      </b-modal>
+      <nuxt-link to="/" class="button--grey mr-3">Home</nuxt-link>
+      <b-button size="sm" @click="logout" variant="danger">로그아웃</b-button>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
@@ -59,9 +60,6 @@ export default {
     }
   },
   methods: {
-    test() {
-      console.log(test);
-    },
     async getAlbums () {
       await axios.get(albumsUrl, {
         params: {
@@ -108,10 +106,25 @@ export default {
       this.curpagenum = pageNum;
       this.getAlbums();
     },
+    logout() {
+      this.$store.commit('logout');
+      $nuxt.$router.push({path: '/'});
+    }
   },
   mounted () {
     this.getAlbums();
-  }
+  },
+  beforeRouteEnter (to, from, next) {
+    console.log(to.$store, from);
+    
+    next(vm => {
+      if (localStorage.getItem('accessToken') || vm.$store.getters.isLogin) {
+        next();
+      } else {
+        next({ name: 'Login' });
+      }
+    })
+}
 }
 </script>
 
