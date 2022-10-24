@@ -2,6 +2,7 @@ module.exports = {
   /*
   ** Headers of the page
   */
+  devtools: true,
   telemetry: true,
   head: {
     title: 'freed_groupp',
@@ -14,6 +15,19 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  modules: [
+    '@nuxtjs/axios',
+    'bootstrap-vue/nuxt',
+  ],
+  axios: {
+      proxy: true     // proxy 사용
+  },
+  proxy: {
+      '/prefix-url': 'proxy-url'    // proxy url
+  },
+  plugins: [
+    { src: '~plugins/client', ssr: false },
+  ],
   /*
   ** Customize the progress bar color
   */
@@ -34,6 +48,12 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
+    }
+  },
+  router: {
+    beforeResolve(to, from, next) {
+      if (this.$store.getters.isLoggedIn)
+            next('/resource')
     }
   }
 }

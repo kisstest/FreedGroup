@@ -15,7 +15,9 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/proxy": "^2.1.0",
-    "nuxt": "^2.0.0"
+    "bootstrap-vue": "^2.22.0",
+    "nuxt": "^2.0.0",
+    "vuejs-paginate": "^2.1.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
