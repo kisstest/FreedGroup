@@ -68,7 +68,7 @@ export default {
         }
       })
       .then((res) => {
-          console.log(res);
+          // console.log(res);
           this.albumlist = res.data // 데이터 배열 저장
       })
       .catch(err => {
@@ -82,7 +82,6 @@ export default {
     },
     openModifyAblumModal(item) {
       this.$bvModal.show('modal');
-      console.log('this.tempAlbum', this.tempAlbum);
       Object.assign(this.tempAlbum, item);
       this.modifyAlbumTitle = item.title;
     },
@@ -115,8 +114,6 @@ export default {
     this.getAlbums();
   },
   beforeRouteEnter (to, from, next) {
-    console.log(to.$store, from);
-    
     next(vm => {
       if (localStorage.getItem('accessToken') || vm.$store.getters.isLogin) {
         next();

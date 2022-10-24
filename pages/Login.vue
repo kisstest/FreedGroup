@@ -1,6 +1,5 @@
 <template>
   <b-container fluid>
-    <div>
       <h1>로그인</h1>
       <b-form>
         <b-form-group
@@ -53,7 +52,6 @@
         </b-toast>
         <nuxt-link size="sm" to="/" class="button--grey">Home</nuxt-link>
       </b-form>
-    </div>  
   </b-container>  
 </template>
 
@@ -94,10 +92,8 @@ export default {
       const passwordRex =
         /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
       if (passwordRex.test(newVal)) {
-        // console.log("password yes");
         this.invalidPassword = false;
       } else {
-        // console.log("password error");
         this.invalidPassword = true;
       }
     },
@@ -116,7 +112,6 @@ export default {
         return result;
       });
       if (match) {
-        console.log('match');
         const userInfo = {
           email: this.email,
           password: this.password,
